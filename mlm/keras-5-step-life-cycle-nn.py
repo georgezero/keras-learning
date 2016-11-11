@@ -9,7 +9,7 @@ http://machinelearningmastery.com/5-step-life-cycle-neural-network-models-keras/
 4. Evaluate network
 5. Make predictions
 
-# Define network
+# Step 1: Define network
 
 NN are defined in keras as a sequence of layers -- contained in the Sequential
 class
@@ -50,6 +50,31 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
+"""
+The choice of activation function is most important for the output layer as it will define the format that predictions will take.
+
+For example, below are some common predictive modeling problem types and the structure and standard activation function that you can use in the output layer:
+
+    Regression: Linear activation function or 'linear' and the number of neurons matching the # outputs
+    Binary Classification (2 class): Logistic activation or 'sigmoid' and one neuron in the output layer
+    Multiclass Classificaton (> 2 class): Softmax activation function or 'softmax' and one output neuron per class value, assuming a one-hot encoded output pattern.
 
 
+"""
+
+# Step 2: Compile Network
+
+
+"""
+Once we have defined our network, we must compile it.
+
+Compilation is an efficient step. It transforms the simple sequence of layers that we defined into a highly efficient series of matrix transformations in a format intended to be executed on your GPU / CPU depending on how keras is configured.
+
+Think of compilation as a precompute step for your network.
+
+Compilation is always required after defining a model.  This includes both before training it using an optimization scheme as well as loading a set of pre-trained weights from a save file.
+The reason is that the compilation step prepares an efficient representation of the network that is also required to make predictions on your hardware.
+
+
+"""
 
