@@ -75,6 +75,42 @@ Think of compilation as a precompute step for your network.
 Compilation is always required after defining a model.  This includes both before training it using an optimization scheme as well as loading a set of pre-trained weights from a save file.
 The reason is that the compilation step prepares an efficient representation of the network that is also required to make predictions on your hardware.
 
+Compilation requires these parameters: optimization algorithm used to train the network and the loss function used to evaluate the network that is minimized by the optimization algorithm.
 
 """
+
+# For example in a regression type problem, you can specify stochastic gradient descent (sgd) optmization algorithm and mean squared error (mse) loss function:
+
+model.compile(optimizer='sgd', loss='mse')
+
+"""
+The type of predictive modeling problem imposes constrains on the type of loss function that can be used
+
+For example, here are some standard loss functions for different predictive model types:
+
+
+    Regression: Mean Squared Error (mse)
+    Binary Classification (2 classes): Logarithmic Loss, also called cross entropy (binary_corssentropy)
+    Multiclass Classification (>2 classes): Multiclass Logarithmic Loss (categorical_crossentropy)
+
+The most common optmization algorithm is stochastic gradient descent (sgd), but Keras supports other optimization algos.  Commonly used:
+    Stochastic Gradient Descent (sgd) - requires tuning learning rate and momentum
+    ADAM (adam) - requires tuning of learning rate
+    RMSprop (rmsprop) - requires tuning learning rate
+
+Finally, you can specify metrics to collect while fitting your model in addition to the loss function.  The most useful add'l metric to collect is accuracy for classification problems:  The metrics to collect are specified by name in an array:
+
+"""
+
+model.compile(optimizer='sgd', loss='mse', metrics=['accuracy'])
+
+
+"""
+# Step 3. Fit Network
+"""
+
+"""
+
+"""
+
 
