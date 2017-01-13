@@ -52,6 +52,36 @@ Cross-validation
 
 # Linear Classification
 
+Score function - map raw image pixels to class scores (eg, linear function)
 
+Loss function - measures quality of particular set of parameters based on how well the induced scores agreed with ground truth labels in the training data
 
+# Optimization 1
 
+Gradient Descent (Vanilla)
+
+```
+while True:
+    weights_grad = evaluate_grandient(loss_fun, data, weights)
+    weights += - step_size * weights_grad # perform parameter update
+```
+
+Simple loop is core of all NN libraries.  Gradient Descent is by far the most common optimization.
+
+Mini-batch Gradient Descent
+- Size of mini-batch is a hyperparameter usually based on memory constraints
+- Or set some value (eg, 32, 64, 128), use power of 2 because many vectorized operation implementations work faster when their inputs are  sized in powers of 2
+```
+while True:
+    data_batch = sample_training_data(data, 256) # sample 256 examples
+    weights_grad = evaluate_gradient(loss_fun, data_batch, weights)
+    weights += - stepsize * weights_grad # perform parameter updates
+```
+
+Stochastic Gradient Descent (SGD)
+- Extreme case where mini-batch contains only single example
+- AKA on-line gradient descent
+
+# Backpropagation
+
+- Way of computing gradients of expressions through recursive application of chain rule
