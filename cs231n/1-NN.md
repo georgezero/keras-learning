@@ -85,3 +85,102 @@ Stochastic Gradient Descent (SGD)
 # Backpropagation
 
 - Way of computing gradients of expressions through recursive application of chain rule
+
+
+Problem Statement: Given some function f(x) where x is a vector of inputs and we
+are interested in the computing gradient of f at x
+
+Motivation
+- f will correspond to the loss function (L) and the inputs x will consist of
+  training data and the neural network weights
+
+Gradient calculations
+
+f(x,y) = xy -> df/dx = y and df/dy = x
+
+Compound expressions with chain rule
+
+```
+# set some inputs
+x = -2; y = 5; z = -4
+
+# perform forward pass
+q = x + y # q becomes 3
+f = q * z # f becomes -12
+
+# perform backward pass (backprop) in reverse order:
+# first backprop through f = q * z
+dfdz = q # df/dz = q, so gradient on z becomes 3
+dfdq = z # df/dq = z, so gradient on q becomes -4
+
+# now backprop through q = x + y
+dfdx = 1.0 * dfdq # dq/dx = 1. And the multiplication here is the chain rule
+dfdy = 1.0 * dfdq # dq/dy = 1
+
+This extra multiplcation (for each input) due to the chain rule can turn
+a single and relatively useless gate into a cog into a complex circuit such as
+an entire neural network
+
+Patterns in backward flow
+- add gate
+- max gate
+- multiply gate
+
+# Neural Networks 1
+
+```
+class Neuron(object):
+  def forward(inputs):
+  """ assume inputs and weights are 1D numpy arrays and bias isa number """
+  cell_body_sum = np.sum(inputs * self.weights) + self.bias
+  firing_rate = 1.0 / (1.0 + math.exp(-cell_body_sum)) # sigmoid activation
+  return firing_rate
+```
+
+## Single neuron as a linear classifier
+
+Binary Softmax classifier (AKA logistic regression prediction based on whether
+neuron is greater than 5)
+
+Binary SVM
+
+Regularization interpretation
+
+## Commonly used activation functions
+
+Sigmoid
+
+Tanh
+
+*ReLU* - be careful of learning rates and % dead units
+
+Leaky ReLU
+
+Maxout
+
+## NN Architectures
+
+Most common layer type is fully-connected layer
+
+Naming conventions: N-layer neural network (exclude input layer)
+
+Output layer: Most commonly doesn't have activation function
+
+Sizing:
+- Number of neurons
+- Number of parameters (weights + biases)
+
+## Example
+
+```
+# forward-pass of a 3-layer neural network
+f = lambda x: 1.0/(1.0 + np.exp(-x)) # activation function (use sigmoid)
+x = np.random.randn(3, 1) # random input vector of three numbers (3x1)
+h1 = f(np.dot(W1, x) + b1) # calculate 1st hidden layer activations (4x1)
+h2 = f(np.dot(W2, h1) + b2) # calculate 2nd hidden layer activations (4x1)
+out = np.dot(W3, h2) + b3 # output neuron (1x1)
+```
+
+# NN 2
+
+
