@@ -215,8 +215,79 @@ Batch Normalization
 
 ## Regularization
 
+Controlling the capacity of NN to prevent overfitting
+
 L2 regularization
+- Most common
+- Penalizing the squared magnitude of all parameters directly in the objective
+- Add 1/2 * lambda * w^2 to objective, where lambda is regularization strength
+- 1/2 useful because gradient of this term is 2 * lambda * w
+- Intuitively: heavily penalizing peaky weight vectors and preferring diffuse
+  weight vectors.
+- Due to multiplicative interactions between weights and inputs, this has the
+  appealing property of encouraging the network to use all of its inputs
+  a little than some of its inputs a lot.
+- Notice gradient descent parameter update, using L2 regularization ultimately
+  means that every weight is decayed linearly: W += -lambda * W towards 0
+
 L1 regularization
+- Add term lambda * |w| to the objective
+- Can combine L1 and L2: lambda_1 * |w| + lambda_2 * w^2 (called elastic
+  regularization)
+- L1 leads weight vectors to become sparse during optimization (very close to
+  exactly zero)
+- Neurons with L1 regularization end up using only a sparse subset 
+of their most important inputs and become nearly invariant to 'noisy' inputs
+- L2 usually better than L1
+
 Max norm constraints
+- Enforce absolute upper bound on the magnitude of weight vector for every
+  neuron and use projected gradient descent to enforce the constrant
+- Corresponds to performing the parameter update as normal, and then enforcing
+  the constraint by clamping the weight vector w of every neuron to satisfy
+  ||w||2 < c 
+- Typical values of c are on orders of 3 or 4
+- Some people report improvements when using this form of regularization
+- Network cannot 'explode' even when learning rates are set too high because
+the learning rates are set too high because updates are always bounded
+
 Dropout
+- Complements other regularization techniques
+- Dropout implemented by only keeping a neuron active with some probability
+  p (hyperparameter), or setting it to zero otherwise
+- Use inverted dropout, to have better forward pass performance during 
+test time, and prediction code can remain untouched
+
+```
+# Inverted Dropout
+
+```
+
+Theme of noise in forward pass
+- Introduce stochastic behavior in the forward pass of the network
+- During testing, the noise is marginalized over analytically or numerically by
+  sampling, by performing several forward passes with different random decisions
+  and then averaging over them
+
+Bias regularization
+
+Per-layer regularization
+
+IN PRACTICE: 
+- Use single, global L2 regularization strength that is cross-validated
+- Common to combine this with dropout applied after all layers
+- Value of p = 0.5 is reasonable default, but can be tuned on validtion data
+
+## Loss functions
+
+Classification
+Regression
+Structured Prediction
+- Labels can be arbitrary structures such as graphs, trees, and other complex
+  objects
+- Usually ssumes that the space of structures is very large and not 
+easily enumerable
+
+
+# NN 3
 
