@@ -183,4 +183,40 @@ out = np.dot(W3, h2) + b3 # output neuron (1x1)
 
 # NN 2
 
+## Setting up the data and the model
+
+Data Preprocessing
+
+- Mean subtraction
+- Normalization
+- PCA and whitening
+
+Mean must only be computed on the training data, and then applied to the
+validation / test data
+
+## Weight Initialization
+
+Pitfall: all zero initialization
+
+Small random numbers
+
+Calibrating the variances with 1/sqrt(n)
+
+Sparse initialization
+
+Initializing the biases
+
+IN PRACTICE: current recommendation is to use ReLU units and use the
+
+wp = np.random.randn(n) * sqrt(2.0/n)
+
+
+Batch Normalization
+
+## Regularization
+
+L2 regularization
+L1 regularization
+Max norm constraints
+Dropout
 
