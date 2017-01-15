@@ -291,3 +291,144 @@ easily enumerable
 
 # NN 3
 
+## Learning parameters and finding good hyperparameters
+
+### Gradient checks
+
+Performing a gradient check is as simple as comparing the analytic gradient to
+the numerical gradient
+
+- Use the centered formula
+- Use relative error for the comparison
+- Use double precision
+- Stick around active range of a floating point
+- Kinks in the objective (non-differentiable parts of an objective fn introduced
+  by functions such as ReLU. SVM loss, Maxout neurons, etc)
+- Use only a few datapoints
+- Be careful with the step size h (to avoid numerical precision problems)
+- Gradcheck during a 'characteristic' mode of operation
+- Don't let the regularization overwhelm the data
+- Remember to turn off dropout/augmentations
+- Check only few dimensions
+
+
+### Before learning sanity checks
+
+- Look for correct loss at chance performance (make sure you're getting the loss
+  you expect when you initialize with small parameters; better to check the data
+  loss alone so set regularization strength to zero)
+- Overfit a tiny subset of data: Before training on the full dataset, try to
+  train a tiny portion (eg, 20 examples) of your data and make sure you can
+  achieve zero cost.  For this experiment it's also best to set regularization
+  to zero, otherwise this can prevent you from getting zero cost.  Note it may
+  happen that you can overfit a very small dataset but still have an incorrect
+  implementation.
+
+### Babysitting the learning process
+
+Loss function
+- First quantity to track
+- Evaluated on the individual batches during the forward pass
+
+Train/Val accuracy
+- Plot can give insights into amount of overfitting in your model
+
+Ratio of weights:updates
+
+Activation / Gradient distributions per layer
+
+First-layer visualizations
+
+## Parameter updates
+
+### SGD and bells and whistles
+
+Vanilla update
+
+```
+x += - learning_rate * dx
+```
+
+Momentum update
+
+```
+v = mu * v - learning_rate * dx # integrate velocity
+x += v
+```
+
+mu = hyperparameter (momentum)
+
+With momentum update, the parameter vector will build up velocity in any
+direction that has consistent gradient
+
+Nesterov momentum
+
+### Annealing the learning rate
+
+Usually helpful to anneal the learning rate over time
+
+Decay it slowly and you'll be wasting computation bouncing around chaotically
+with little improvement over time
+
+But decay too aggressively and the system will cool too quickly, unable to reach
+the best position it can
+
+Three types of learning rate decay
+1. Step decay: reduce learning rate by some factor every few epochs
+2. Exponential decay
+3. 1/t decay
+
+### Second order methods
+
+### Per parameter adaptive learning rate methods
+
+
+## Hyperparameter optimization
+
+Most common hyperparameters:
+- initial learning rate
+- learning rate decay schedule (eg, decay constant)
+- regularization strength (L2 penalty, dropout strength)
+
+Workers and master
+
+Prefer one validation to cross-validation
+
+Hyperparameter ranges: search for hyperparameters on log scale
+
+Prefer random search to grid search
+
+Careful with best values on border
+
+Stage your search from coarse to fine
+
+Bayesian hyperparameter optimization
+
+## Model evaluation
+
+### Model ensembles
+
+Train multiple independent models, and at test time average their predictions
+
+As the number of models in the ensemble increases, the performance typically
+monotonically improves (though with diminishing returns)
+
+
+#### Approaches
+
+Same model, different initialization
+
+Top models discovered during cross-validation
+
+Different checkpoints of a single model
+
+Running average of parameters during training
+
+
+Dark Knowledge: distill a good ensemble back to a single model by incorporating
+the ensemble log likelihoods into a modified objective
+
+
+
+
+
