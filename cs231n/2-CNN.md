@@ -150,4 +150,31 @@ ZERO-PADDING
 - Most commonly, we will use it to exactly preserve the spatial size of the
   input volume so the input and output width and height are the same
 
+Use of zero-padding
+
+Constraints on strides
+
+Parameter Sharing
+- For image size of [227x227x3], use neurons with receptive field size F=11,
+  S=4, and no zero padding P=90
+- Since (227-11)/4 + 1 = 55, the CONV layer size is [55x55x96] with depth of 96, connected to
+  a region of size [11x11x3] so for each layer has `55*55*96 = 290,400 neurons`
+  and each has `11*11*3 = 363 weights and 1 bias` = `290400 * 365 = 105,705,600`
+  parameters
+- Make assumption that if one feature is useful to compute at some spatial
+  position (x,y), then it should also be useful to compute at a different
+  position (x2,y2)
+- IOW denoting a single 2D slice of depth as a depth slice (eg, volume of size
+  [55x55x96] has 96 depth slices, each of the size [55x55]), we are going to
+  constrain the neurons in each depth slice to use to same the same weights and
+  biases.
+- With this parameter sharing scheme, the first CONV layer in our example would
+  only have 96 unique weights (one for each depth slice) for a total of
+  `96*11*11*3 = 34,848` unique weight, or 34,944 parameters (+96 biases)
+
+Sometimes the parameter sharing assumptions may not make sense, esp when the
+input image to a CNN have some specific centered structure, where we should
+expect that completely different features should be learned on one side of the
+image than another
+
 
